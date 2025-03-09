@@ -11,11 +11,31 @@ app.use(function (req, res, next) {
 app.get("/cats", function (req, res) {
     try {
         var cats = app_model_1.Cat;
-        throw new Error("db connect error");
         res.status(200).send({
             success: true,
             data: {
                 cats: cats,
+            },
+        });
+    }
+    catch (error) {
+        res.status(400).send({
+            success: false,
+            error: error.message,
+        });
+    }
+});
+app.get("/cats/:id", function (req, res) {
+    try {
+        var params_1 = req.params;
+        console.log(params_1);
+        var cat = app_model_1.Cat.find(function (cat) {
+            return cat.id === params_1.id;
+        });
+        res.status(200).send({
+            success: true,
+            data: {
+                cat: cat,
             },
         });
     }
