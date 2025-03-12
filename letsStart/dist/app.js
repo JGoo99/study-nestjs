@@ -8,6 +8,7 @@ app.use(function (req, res, next) {
     console.log("this is logging middleware");
     next();
 });
+app.use(express.json());
 app.get("/cats", function (req, res) {
     try {
         var cats = app_model_1.Cat;
@@ -37,6 +38,23 @@ app.get("/cats/:id", function (req, res) {
             data: {
                 cat: cat,
             },
+        });
+    }
+    catch (error) {
+        res.status(400).send({
+            success: false,
+            error: error.message,
+        });
+    }
+});
+app.post("/cats", function (req, res) {
+    try {
+        var data = req.body;
+        console.log(data);
+        app_model_1.Cat.push(data);
+        res.status(200).send({
+            success: true,
+            data: { data: data },
         });
     }
     catch (error) {
