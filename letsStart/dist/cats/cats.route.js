@@ -114,5 +114,21 @@ router.patch("/cats/:id", function (req, res) {
         });
     }
 });
+router.delete("/cats/:id", function (req, res) {
+    try {
+        var params_4 = req.params;
+        var newCat = cats_model_1.Cat.filter(function (cat) { return cat.id !== params_4.id; });
+        res.status(200).send({
+            success: true,
+            data: { newCat: newCat },
+        });
+    }
+    catch (error) {
+        res.status(400).send({
+            success: false,
+            error: error.message,
+        });
+    }
+});
 exports.default = router;
 //# sourceMappingURL=cats.route.js.map

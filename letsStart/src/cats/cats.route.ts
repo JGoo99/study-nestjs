@@ -110,4 +110,21 @@ router.patch("/cats/:id", (req, res) => {
   }
 });
 
+// DELETE 고양이 데이터 삭제
+router.delete("/cats/:id", (req, res) => {
+  try {
+    const params = req.params;
+    const newCat = Cat.filter((cat) => cat.id !== params.id);
+    res.status(200).send({
+      success: true,
+      data: { newCat },
+    });
+  } catch (error: any) {
+    res.status(400).send({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
 export default router;
