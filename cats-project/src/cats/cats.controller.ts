@@ -1,32 +1,47 @@
-import { Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
-import { CatsService } from "./cats.service";
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseFilters,
+} from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { HttpExceptionFilter } from 'src/http-exception.filter';
+import { PositiveIntPipe } from 'src/pipes/positiveInt.pipe';
 
-@Controller("cats")
+@Controller('cats')
+@UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(private readonly CatsService: CatsService) {}
 
   @Get()
   getAllCats() {
-    return "all cats";
+    throw new HttpException('api is broken', 500);
+    return 'all cats';
   }
 
-  @Get(":id")
-  getCat(@Param() id: string) {
-    return "get cat " + id;
+  @Get(':id')
+  getCat(@Param('id', ParseIntPipe, PositiveIntPipe) id: number) {
+    console.log(typeof id);
+    return 'get cat ' + id;
   }
 
   @Post()
   createCat() {
-    return "cat created";
+    return 'cat created';
   }
 
-  @Patch(":id")
-  updateCat(@Param("id") param: string) {
-    return "cat " + param + " updated";
+  @Patch(':id')
+  updateCat(@Param('id') param: string) {
+    return 'cat ' + param + ' updated';
   }
 
-  @Delete(":id")
-  deleteCat(@Param("id") id: any) {
-    return "cat " + id + " deleted";
+  @Delete(':id')
+  deleteCat(@Param('id') id: any) {
+    return 'cat ' + id + ' deleted';
   }
 }
